@@ -1,0 +1,13 @@
+"categorie","nb_lignes","volume","chiffre_affaires","pct_ca"
+"Ligne valide","7171","69531","8820324.809999965","95.0"
+"Client absent","237","2175","281263.56999999995","3.0"
+"Produit absent","139","1441","183284.03999999983","2.0"
+
+-- **Combien et quel volume/CA ?** 
+-- 376 lignes (237 client absent + 139 produit absent), 
+-- soit environ 5% du CA total (464 548€) et 3616 unités.
+
+-- **Comment sont-elles traitées ?** 
+-- Elles sont isolées via une clé conventionnelle `-1` dans les dimensions (pas de vraie clé orpheline) : 
+-- conservées dans les analyses de CA global, 
+-- mais exclues des classements clients/produits.
