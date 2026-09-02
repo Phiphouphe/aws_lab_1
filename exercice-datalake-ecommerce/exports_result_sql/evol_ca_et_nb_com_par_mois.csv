@@ -1,0 +1,9 @@
+"year","month","chiffre_affaires","nb_commandes","variation_ca","variation_ca_pct"
+"2026","4","1646379.0599999996","1057",,
+"2026","5","3104257.6000000015","1543","1457878.540000002","88.6"
+"2026","6","3197460.6999999974","1488","93203.0999999959","3.0"
+"2026","7","1336775.0600000005","898","-1860685.6399999969","-58.2"
+
+-- Le CA et le nombre de commandes progressent fortement d'avril à mai, 
+-- se stabilisent en juin, 
+-- puis chutent nettement en juillet (−58% de CA, −40% de commandes)

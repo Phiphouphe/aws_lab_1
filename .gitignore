@@ -1,0 +1,5 @@
+# Fichiers Terraform à ne jamais versionner
+*.tfvars
+*.tfstate
+*.tfstate.*
+.terraform/

@@ -1,0 +1,19 @@
+"product_id","title","rang_ca","chiffre_affaires","rang_qty","quantite"
+"1","Essence Mascara Lash Princess","1","109225.24999999997","2","785"
+"104","Apple iPhone Charger","2","104524.95999999996","1","830"
+"46","Plant Pot","3","98308.00000000001","10","675"
+"101","Apple AirPods Max Silver","4","94543.26","4","700"
+"115","MotoGP CI.H1","5","92664.50999999998","9","683"
+"22","Dog Food","6","92006.95999999995",,
+"126","Oppo F19 Pro Plus","7","91711.37999999998","7","685"
+"10","Gucci Bloom Eau de","8","88084.77000000002",,
+"28","Ice Cream","9","86332.42",,
+"109","Monopod","10","85903.78999999998","6","693"
+"41","Tissue Paper Box",,,"3","761"
+"125","Oppo A57",,,"5","694"
+"73","Spice Rack",,,"8","684"
+
+-- Ce ne sont pas exactement les mêmes produits qui génèrent le plus de CA et les plus vendus en quantité. 
+-- Sur les 10 produits de chaque classement:
+-- 7 sont communs aux deux tops, 
+-- mais 3 produits diffèrent de chaque côté 
