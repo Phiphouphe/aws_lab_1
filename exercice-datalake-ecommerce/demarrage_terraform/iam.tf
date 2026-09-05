@@ -52,6 +52,7 @@ data "aws_iam_policy_document" "pipeline" {
       "s3:GetObject",
       "s3:PutObject",
       "s3:DeleteObject",
+      "s3:GetBucketLocation",
     ]
     resources = [
       aws_s3_bucket.datalake.arn,                       # le bucket lui-même (pour ListBucket)
