@@ -3,7 +3,7 @@
 -- réellement les anomalies (avant nettoyage / après nettoyage)
 -- =========================================================
 
-SELECT COUNT(*) AS total_orders_raw FROM orders_raw;
+SELECT COUNT(*) AS total_orders_raw FROM orders_raw WHERE ingestion_date IS NOT NULL;
 SELECT COUNT(*) AS total_orders_clean FROM orders_clean;
 
 SELECT COUNT(*) AS reste_unit_price_zero FROM orders_clean WHERE unit_price = 0;

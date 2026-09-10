@@ -40,7 +40,7 @@ locals {
 #   gold/, athena-results/ (astuce : for_each sur un toset(["bronze/", ...]))
 
 resource "aws_s3_bucket" "datalake" {
-  bucket = local.bucket_name
+  bucket        = local.bucket_name
   force_destroy = true
 }
 
@@ -48,7 +48,7 @@ resource "aws_s3_object" "zones" {
   for_each = toset(["bronze/", "silver/", "gold/", "athena-results/"])
 
   bucket = aws_s3_bucket.datalake.id
-  key = each.value
+  key    = each.value
 }
 
 # ---------------------------------------------------------------------------
@@ -130,32 +130,32 @@ resource "aws_budgets_budget" "notification" {
 
 # 1. Le canal de notification (vide au départ, juste un nom)
 resource "aws_sns_topic" "alerts" {
-  name = "${var.project_name}-alerts"  # nom du topic dans SNS
+  name = "${var.project_name}-alerts" # nom du topic dans SNS
 }
 
 # 2. L'abonnement email sur ce canal
 resource "aws_sns_topic_subscription" "alerts_email" {
-  topic_arn = aws_sns_topic.alerts.arn   # sur quel topic s'abonner
-  protocol  = "email"                     # moyen de notification
-  endpoint  = var.budget_alert_email      # adresse email destinataire
+  topic_arn = aws_sns_topic.alerts.arn # sur quel topic s'abonner
+  protocol  = "email"                  # moyen de notification
+  endpoint  = var.budget_alert_email   # adresse email destinataire
   # ⚠️ nécessitera de cliquer sur le lien de confirmation reçu par email
 }
 
 # 3. L'alarme qui surveille la métrique et déclenche l'envoi
 resource "aws_cloudwatch_metric_alarm" "s3_bucket_size" {
-  alarm_name          = "${var.project_name}-bucket-size-alarm"  # nom de l'alarme
-  comparison_operator = "GreaterThanThreshold"  # se déclenche si valeur > threshold
-  evaluation_periods  = 1                        # nombre de périodes consécutives à vérifier
-  metric_name         = "BucketSizeBytes"        # métrique surveillée
-  namespace           = "AWS/S3"                 # service AWS concerné
-  period              = 86400                    # fréquence de vérification (1 jour, en secondes)
-  statistic           = "Average"                # agrégation utilisée sur la période
-  threshold           = 5000000000               # seuil de déclenchement (5 Go, à ajuster)
+  alarm_name          = "${var.project_name}-bucket-size-alarm" # nom de l'alarme
+  comparison_operator = "GreaterThanThreshold"                  # se déclenche si valeur > threshold
+  evaluation_periods  = 1                                       # nombre de périodes consécutives à vérifier
+  metric_name         = "BucketSizeBytes"                       # métrique surveillée
+  namespace           = "AWS/S3"                                # service AWS concerné
+  period              = 86400                                   # fréquence de vérification (1 jour, en secondes)
+  statistic           = "Average"                               # agrégation utilisée sur la période
+  threshold           = 5000000000                              # seuil de déclenchement (5 Go, à ajuster)
 
   dimensions = {
-    BucketName  = aws_s3_bucket.datalake.id      # cible précisément CE bucket (nom, pas ARN)
-    StorageType = "StandardStorage"               # type de stockage concerné par la métrique
+    BucketName  = aws_s3_bucket.datalake.id # cible précisément CE bucket (nom, pas ARN)
+    StorageType = "StandardStorage"         # type de stockage concerné par la métrique
   }
 
-  alarm_actions = [aws_sns_topic.alerts.arn]      # où envoyer l'alerte si seuil dépassé (ARN requis)
+  alarm_actions = [aws_sns_topic.alerts.arn] # où envoyer l'alerte si seuil dépassé (ARN requis)
 }

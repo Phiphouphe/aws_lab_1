@@ -36,8 +36,8 @@ SELECT DISTINCT
       SUBSTR(invoicedate, 1, 10) AS DATE)
   END AS invoice_date
 FROM orders_raw
-WHERE 
-  TRY_CAST(quantity AS INTEGER) IS NOT NULL 
+WHERE ingestion_date IS NOT NULL
+  AND TRY_CAST(quantity AS INTEGER) IS NOT NULL 
   AND TRY_CAST(unitprice AS DOUBLE) != 0 
   AND CASE 
     WHEN invoicedate LIKE '%/%'

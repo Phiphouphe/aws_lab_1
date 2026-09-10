@@ -148,7 +148,23 @@ avant/après) dans **`docs/data_quality.md`**.
   source/users_raw/users.jsonl
   ```
 
-### Étapes
+### Deux modes de déploiement : Étapes
+
+Le projet peut être déployé de **deux manières différentes**, selon que les
+fichiers d'orchestration \`pipeline.tf\` et \`scripts/run\_athena\_query.sh\`
+sont présents ou non.
+
+Dans les deux cas, **l'infrastructure AWS est toujours créée avec Terraform** :
+bucket S3, base Glue, rôle IAM, Budget/alarme, etc. Les fichiers
+\`pipeline.tf\` et \`run\_athena\_query.sh\` ne sont donc pas nécessaires au
+provisionnement de l'infrastructure : ils servent uniquement à automatiser
+l'upload des sources et l'exécution des requêtes SQL.
+
+#### Mode 1 — Déploiement automatisé avec \`pipeline.tf\`
+
+Lorsque \`pipeline.tf\` et \`scripts/run\_athena\_query.sh\` sont disponibles,
+un seul \`terraform apply\` permet d'enchaîner l'infrastructure, l'upload des
+sources et l'exécution du pipeline SQL.
 
 ```bash
 cd demarrage_terraform
@@ -177,64 +193,57 @@ Les placeholders `{{BUCKET}}` dans les fichiers `.sql` sont remplacés à la
 volée par `run_athena_query.sh` avec le nom réel du bucket généré par
 Terraform (aucun nom en dur dans le SQL).
 
-### Relancer proprement (idempotence)
+#### Mode 2 — Déploiement manuel sans \`pipeline.tf\` ni \`run\_athena\_query.sh\`
 
-Chaque script Silver/Gold commence par `DROP TABLE IF EXISTS`, qui
-supprime la métadonnée Glue mais **pas les fichiers Parquet déjà écrits
-sur S3**. Avant de relancer `terraform apply` après une première
-exécution réussie, vider les dossiers concernés :
+Si les fichiers d'orchestration ne sont pas disponibles, **ils n'ont pas
+besoin d'être déployés**. Terraform sert uniquement à créer l'infrastructure.
 
-```bash
-aws s3 rm s3://<bucket>/silver/ --recursive
-aws s3 rm s3://<bucket>/gold/ --recursive
-```
-
-sinon Athena renverra `HIVE_PATH_ALREADY_EXISTS`.
-
-## 5. Exécuter le projet de bout en bout
-
-### Prérequis
-
-- Un compte AWS avec les droits suffisants (S3, Glue, Athena, IAM,
-  Budgets, CloudWatch, SNS)
-- [Terraform](https://developer.hashicorp.com/terraform/downloads) >= 1.5
-- [AWS CLI](https://aws.amazon.com/cli/) configuré (`aws configure`)
-- Les 3 fichiers sources placés dans `source/`, avec cette arborescence
-  exacte (reprise par `aws s3 sync` vers `bronze/`) :
-  ```
-  source/orders_raw/orders.csv
-  source/products_raw/products.jsonl
-  source/users_raw/users.jsonl
-  ```
-
-### Étapes
-
-```bash
-cd demarrage_terraform
+\`\`\`bash
+cd demarrage\_terraform
 cp terraform.tfvars.example terraform.tfvars
-# éditer terraform.tfvars : au moins budget_alert_email
+
+# éditer terraform.tfvars : au moins budget\_alert\_email
 
 terraform init
 terraform plan
 terraform apply
-```
+\`\`\`
 
-`terraform apply` exécute, dans cet ordre :
-1. **Infrastructure** (`main.tf`, `iam.tf`) — voir
-   `demarrage_terraform/README.md` pour le détail.
-2. **Upload des données sources** (`pipeline.tf`, ressource
-   `upload_source`) : synchronise `source/` vers `s3://<bucket>/bronze/`.
-3. **Pipeline SQL** (`pipeline.tf`), via `scripts/run_athena_query.sh`, qui
-   soumet chaque requête à Athena (workgroup `primary`) et attend sa fin
-   avant de passer à la suivante :
-   - `sql/01_bronze/create_tables.sql`
-   - `sql/02_silver/orders_clean.sql`, `products_clean.sql`, `users_clean.sql`
-   - `sql/03_gold/dim_date.sql`, `dim_produit.sql`, `dim_client.sql`,
-     `fact_ventes.sql`
+Une fois le bucket créé, les fichiers sources sont envoyés manuellement dans
+S3 avec l'AWS CLI.
 
-Les placeholders `{{BUCKET}}` dans les fichiers `.sql` sont remplacés à la
-volée par `run_athena_query.sh` avec le nom réel du bucket généré par
-Terraform (aucun nom en dur dans le SQL).
+Pour conserver l'arborescence \`source/\` sous \`bronze/\` :
+
+\`\`\`bash
+aws s3 cp source/ s3://\<bucket>/bronze/ --recursive
+\`\`\`
+
+On peut également copier les fichiers individuellement :
+
+\`\`\`bash
+aws s3 cp source/orders\_raw/orders.csv s3://\<bucket>/bronze/orders\_raw/
+aws s3 cp source/products\_raw/products.jsonl s3://\<bucket>/bronze/products\_raw/
+aws s3 cp source/users\_raw/users.jsonl s3://\<bucket>/bronze/users\_raw/
+\`\`\`
+
+Une fois les fichiers présents dans \`bronze/\`, **le traitement des données se
+fait directement depuis AWS Athena avec les fichiers SQL du projet**. Il n'est
+donc pas nécessaire d'avoir \`pipeline.tf\` ou \`run\_athena\_query.sh\`.
+
+Dans Athena, on exécute les requêtes dans l'ordre suivant :
+
+1\. \`sql/01\_bronze/create\_tables.sql\` — déclaration des tables Bronze.
+
+2\. \`sql/02\_silver/orders\_clean.sql\`,
+   \`products\_clean.sql\`, \`users\_clean.sql\` — nettoyage et typage.
+
+3\. \`sql/03\_gold/dim\_date.sql\`, \`dim\_produit.sql\`,
+   \`dim\_client.sql\`, \`fact\_ventes.sql\` — construction du modèle Gold.
+
+Ainsi, **le mode 2 réalise exactement les mêmes traitements que le mode 1** :
+la différence est uniquement que l'upload S3 et l'exécution des requêtes SQL
+sont effectués manuellement depuis l'AWS CLI et la console Athena, au lieu
+d'être orchestrés par Terraform.
 
 ### Relancer proprement (idempotence)
 
