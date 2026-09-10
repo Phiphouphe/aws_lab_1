@@ -1,0 +1,42 @@
+[0m[1mrandom_id.suffix: Refreshing state... [id=clm5][0m
+[0m[1maws_glue_catalog_database.datalake: Refreshing state... [id=743220303591:mon_datalake_ecommerce_7259b9][0m
+[0m[1maws_s3_bucket.datalake: Refreshing state... [id=mon-datalake-ecommerce-7259b9][0m
+[0m[1maws_budgets_budget.notification: Refreshing state... [id=743220303591:terraform-20260820170130887300000001][0m
+[0m[1maws_sns_topic.alerts: Refreshing state... [id=arn:aws:sns:eu-north-1:743220303591:mon-datalake-ecommerce-alerts][0m
+[0m[1mdata.aws_caller_identity.current: Reading...[0m[0m
+[0m[1mdata.aws_caller_identity.current: Read complete after 0s [id=743220303591][0m
+[0m[1mdata.aws_iam_policy_document.assume_role: Reading...[0m[0m
+[0m[1mdata.aws_iam_policy_document.assume_role: Read complete after 0s [id=1806358234][0m
+[0m[1maws_iam_role.pipeline: Refreshing state... [id=mon-datalake-ecommerce-pipeline-role][0m
+[0m[1maws_sns_topic_subscription.alerts_email: Refreshing state... [id=arn:aws:sns:eu-north-1:743220303591:mon-datalake-ecommerce-alerts:6e1c51ab-ddb1-455f-ac7e-e9b894ef761a][0m
+[0m[1maws_s3_object.zones["silver/"]: Refreshing state... [id=silver/][0m
+[0m[1maws_s3_object.zones["athena-results/"]: Refreshing state... [id=athena-results/][0m
+[0m[1mdata.aws_iam_policy_document.pipeline: Reading...[0m[0m
+[0m[1maws_s3_object.zones["bronze/"]: Refreshing state... [id=bronze/][0m
+[0m[1maws_s3_object.zones["gold/"]: Refreshing state... [id=gold/][0m
+[0m[1maws_cloudwatch_metric_alarm.s3_bucket_size: Refreshing state... [id=mon-datalake-ecommerce-bucket-size-alarm][0m
+[0m[1mdata.aws_iam_policy_document.pipeline: Read complete after 0s [id=479578145][0m
+[0m[1maws_iam_role_policy.pipeline: Refreshing state... [id=mon-datalake-ecommerce-pipeline-role:mon-datalake-ecommerce-pipeline-policy][0m
+[0m[1mnull_resource.upload_source: Refreshing state... [id=2387230637990163007][0m
+[0m[1mnull_resource.bronze: Refreshing state... [id=4837506362482459783][0m
+[0m[1mnull_resource.silver_products: Refreshing state... [id=8326727343849316116][0m
+[0m[1mnull_resource.silver_users: Refreshing state... [id=5042748955047647687][0m
+[0m[1mnull_resource.silver_orders: Refreshing state... [id=836095350994217512][0m
+[0m[1mnull_resource.gold_dim_produit: Refreshing state... [id=638789509415239415][0m
+[0m[1mnull_resource.gold_dim_date: Refreshing state... [id=3400206367654858239][0m
+[0m[1mnull_resource.gold_dim_client: Refreshing state... [id=3278556605157895161][0m
+[0m[1mnull_resource.gold_fact_ventes: Refreshing state... [id=2725428818071045018][0m
+
+[0m[1m[32mNo changes.[0m[1m Your infrastructure matches the configuration.[0m
+
+[0mTerraform has compared your real infrastructure against your configuration
+and found no differences, so no changes are needed.
+[0m[1m[32m
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.[0m
+[0m[1m[32m
+Outputs:
+
+[0maws_region = "eu-north-1"
+bucket_name = "mon-datalake-ecommerce-7259b9"
+glue_database = "mon_datalake_ecommerce_7259b9"
+pipeline_role_arn = "arn:aws:iam::743220303591:role/mon-datalake-ecommerce-pipeline-role"

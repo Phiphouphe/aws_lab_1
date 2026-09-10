@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "assume_role" {
 
     # Qui a le droit de le faire (le "principal")
     principals {
-      type        = "AWS"  # un principal de type compte/utilisateur AWS (pas un service)
+      type        = "AWS" # un principal de type compte/utilisateur AWS (pas un service)
       identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
       # "root" du compte = toi-même (n'importe quel identifiant IAM de TON compte)
     }
@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "assume_role" {
 
 # 2. Le rôle IAM lui-même, qui utilise le document ci-dessus comme "trust policy"
 resource "aws_iam_role" "pipeline" {
-  name               = "${var.project_name}-pipeline-role"       # nom du rôle
+  name               = "${var.project_name}-pipeline-role" # nom du rôle
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
   # .json convertit le bloc HCL ci-dessus en JSON, format attendu par AWS
 }
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "pipeline" {
 
   # --- Permissions S3 ---
   statement {
-    sid = "S3Access"  # identifiant du bloc, juste pour lisibilité
+    sid = "S3Access" # identifiant du bloc, juste pour lisibilité
     actions = [
       "s3:ListBucket",
       "s3:GetObject",
@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "pipeline" {
       "s3:GetBucketLocation",
     ]
     resources = [
-      aws_s3_bucket.datalake.arn,                       # le bucket lui-même (pour ListBucket)
+      aws_s3_bucket.datalake.arn, # le bucket lui-même (pour ListBucket)
       "${aws_s3_bucket.datalake.arn}/bronze/*",
       "${aws_s3_bucket.datalake.arn}/silver/*",
       "${aws_s3_bucket.datalake.arn}/gold/*",
@@ -86,6 +86,11 @@ data "aws_iam_policy_document" "pipeline" {
       "glue:CreateTable",
       "glue:UpdateTable",
       "glue:DeleteTable",
+      "glue:GetDatabase",
+      "glue:GetTable",
+      "glue:GetPartitions",
+      "glue:GetPartition",
+      "glue:BatchCreatePartition",
     ]
     resources = [
       "arn:aws:glue:${var.aws_region}:${data.aws_caller_identity.current.account_id}:catalog",
@@ -101,6 +106,6 @@ data "aws_iam_policy_document" "pipeline" {
 # 4. On attache la policy (le "quoi faire") au rôle (le "qui")
 resource "aws_iam_role_policy" "pipeline" {
   name   = "${var.project_name}-pipeline-policy"
-  role   = aws_iam_role.pipeline.id           # à QUEL rôle on attache
-  policy = data.aws_iam_policy_document.pipeline.json  # QUELLE policy (en JSON)
+  role   = aws_iam_role.pipeline.id                   # à QUEL rôle on attache
+  policy = data.aws_iam_policy_document.pipeline.json # QUELLE policy (en JSON)
 }
