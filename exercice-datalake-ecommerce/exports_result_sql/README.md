@@ -10,7 +10,7 @@ Chaque export correspond à une requête SQL du dossier `sql/05_analytics/`, ave
 | evolution_mensuelle_ca_commandes.csv | [sql/05_analytics/evolution_mensuelle_ca_commandes.sql](../sql/05_analytics/evolution_mensuelle_ca_commandes.sql) | Chiffre d'affaires et nombre de commandes par mois, avec variation en valeur et en % vs mois précédent |
 | panier_moyen_par_pays.csv | [sql/05_analytics/panier_moyen_par_pays.sql](../sql/05_analytics/panier_moyen_par_pays.sql) | Montant moyen par commande, par pays |
 | top_5_clients_ca.csv | [sql/05_analytics/top_5_clients_ca.sql](../sql/05_analytics/top_5_clients_ca.sql) | Top 5 clients par chiffre d'affaires cumulé |
-| nb_commandes_produit_client_absent.csv | [sql/05_analytics/nb_commandes_produit_client_absent.sql](../sql/05_analytics/nb_commandes_produit_client_absent.sql) | Nombre de lignes, volume et CA associés à des clés orphelines (client ou produit absent du catalogue applicatif) |
+| cles_orphelines.csv | [sql/05_analytics/cles_orphelines.sql](../sql/05_analytics/cles_orphelines.sql) | Nombre de lignes, volume et CA associés à des clés orphelines (client ou produit absent du catalogue applicatif) |
 
 ## Comment ajouter une nouvelle analyse
 

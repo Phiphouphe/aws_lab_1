@@ -27,6 +27,13 @@ via AWS Athena.
 │   ├── 02_silver/{orders_clean,products_clean,users_clean}.sql
 │   ├── 03_gold/{dim_date,dim_produit,dim_client,fact_ventes}.sql
 │   └── 04_checks/data_quality_checks.sql
+│   └── 05_analytics/
+│       ├── ca_par_pays_3_derniers_mois.sql
+│       ├── top_produits_ca_vs_quantite.sql
+│       ├── evolution_mensuelle_ca_commandes.sql
+│       ├── panier_moyen_par_pays.sql
+│       ├── top_5_clients_ca.sql
+│       └── cles_orphelines.sql
 ├── exports_results_sql/         résultats CSV des 6 requêtes analytiques finales
 └── demarrage_terraform/         infrastructure AWS (voir son propre README.md)
     ├── README.md                 description du squelette Terraform
