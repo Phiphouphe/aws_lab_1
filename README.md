@@ -33,8 +33,10 @@ via AWS Athena.
 │       ├── evolution_mensuelle_ca_commandes.sql
 │       ├── panier_moyen_par_pays.sql
 │       ├── top_5_clients_ca.sql
-│       └── cles_orphelines.sql
+│       ├── cles_orphelines.sql
+│       └── README.md
 ├── exports_results_sql/         résultats CSV des 6 requêtes analytiques finales
+    └── README.md
 └── demarrage_terraform/         infrastructure AWS (voir son propre README.md)
     ├── README.md                 description du squelette Terraform
     ├── main.tf                   bucket S3, base Glue, AWS Budget, alarme CloudWatch/SNS
