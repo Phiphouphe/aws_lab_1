@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS dim_produit;
 
 CREATE TABLE dim_produit
-WITH (format = 'PARQUET', external_location = 's3://mon-datalake-ecommerce-7259b9/gold/dim_produit') AS
+WITH (format = 'PARQUET', external_location = 's3://{{BUCKET}}/gold/dim_produit') AS
 SELECT DISTINCT
   product_id, 
   title,
