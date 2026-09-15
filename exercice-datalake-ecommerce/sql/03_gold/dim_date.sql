@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS dim_date;
 
 CREATE TABLE dim_date
-WITH (format = 'PARQUET', external_location = 's3://mon-datalake-ecommerce-7259b9/gold/dim_date') AS
+WITH (format = 'PARQUET', external_location = 's3://{{BUCKET}}/gold/dim_date') AS
 SELECT DISTINCT
   CAST(date_format(invoice_date, '%Y%m%d') AS INTEGER) AS date_id, 
   invoice_date AS full_date,

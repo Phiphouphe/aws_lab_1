@@ -5,7 +5,7 @@ CREATE TABLE orders_clean
 WITH (
     format = 'PARQUET',
     parquet_compression = 'SNAPPY',
-    external_location = 's3://mon-datalake-ecommerce-7259b9/silver/orders_clean/'
+    external_location = 's3://{{BUCKET}}/silver/orders_clean/'
 ) AS
 SELECT DISTINCT 
   invoiceno,

@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS fact_ventes;
 
 CREATE TABLE fact_ventes
-WITH (format = 'PARQUET', external_location = 's3://mon-datalake-ecommerce-7259b9/gold/fact_ventes') AS
+WITH (format = 'PARQUET', external_location = 's3://{{BUCKET}}/gold/fact_ventes') AS
 SELECT DISTINCT
   o.invoiceno, 
   CAST(date_format(o.invoice_date, '%Y%m%d') AS INTEGER) AS date_id,

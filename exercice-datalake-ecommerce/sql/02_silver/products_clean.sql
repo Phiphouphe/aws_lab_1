@@ -5,7 +5,7 @@ CREATE TABLE products_clean
 WITH (
     format='Parquet',
     parquet_compression='SNAPPY',
-    external_location='s3://mon-datalake-ecommerce-7259b9/silver/products_clean/'
+    external_location='s3://{{BUCKET}}/silver/products_clean/'
 ) AS 
 SELECT DISTINCT 
   id AS product_id,
